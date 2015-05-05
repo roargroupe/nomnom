@@ -1,0 +1,17 @@
+{
+  "name": "nomnom",
+  "version": "1.0.0",
+  "description": "Slack Food Integration",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "John Stewart <john.stew.digital@gmail.com> (http://johnstewart.net)",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.12.3",
+    "express": "^4.12.3",
+    "morgan": "^1.5.2",
+    "request": "^2.55.0"
+  }
+}
