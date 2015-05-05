@@ -2,6 +2,7 @@ var express = require('express'),
 	bodyParser = require('body-parser'),
 	app = express(),
 	request = require('request'),
+	port = process.env.PORT || 3000,
 	env = require('node-env-file');
 
 // body parser middleware
@@ -14,7 +15,7 @@ app.use(function (err, req, res, next) {
 });
 
 // start listening
-app.listen(3000, function(){
+app.listen(port, function(){
 	console.log('Up & Running!');	
 });
 
