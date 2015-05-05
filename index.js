@@ -5,6 +5,15 @@ var express = require('express'),
 	port = process.env.PORT || 3000,
 	env = require('node-env-file');
 
+// bring in environment variables
+env(__dirname + '/.env');
+
+// bring in db config
+require('./app/db/config');
+
+// bring in models
+require('./app/models/foodspots');
+
 // body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -20,4 +29,4 @@ app.listen(port, function(){
 });
 
 // routes
-var routes = require('./app/routes/routes')(app);
+require('./app/routes/routes')(app);

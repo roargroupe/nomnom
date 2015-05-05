@@ -1,2 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://nomnom:nom123@ds031952.mongolab.com:31952/nomnom');
+
+// bring in env variables
+// connect mongoose
+mongoose.connect('mongodb://nomnom:'+process.env.MONGOPASS+'@ds031952.mongolab.com:31952/nomnom');
