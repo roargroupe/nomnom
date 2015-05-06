@@ -12,7 +12,7 @@ module.exports = function (app) {
     res.send('NOMNOMNOM');
   });
 
-  app.post('/nomnom/', function(req,res){
+  app.post('/nomnom/', function(req,res,err){
   	if(err){
 			res.status(400).json({success: false});
 		}else{

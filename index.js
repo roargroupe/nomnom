@@ -5,7 +5,7 @@ var express = require('express'),
 	port = process.env.PORT || 3000,
 	env = require('node-env-file');
 
-// bring in environment variables
+// bring in environment variables 
 try{
 	env(__dirname + '/.env');
 }catch(err){
