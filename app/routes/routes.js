@@ -12,12 +12,22 @@ module.exports = function (app) {
     res.send('NOMNOMNOM');
   });
 
-  app.get('/add', function(req,res){
+  app.get('/nomnom/', function(req,res){
+  	if(err){
+			res.status(400).json({success: false});
+		}else{
+			res.status(200).json(req.body);
+		}
+  });
+
+  /*app.post('/foodspot/add/', function(req,res){
+  	console.log(req.body);
+  	res.status(200).json({success: true});
   	var fs1 = new Foodspot({
-  		name: 'Johns Food Spots',
+  		name: 'Jacis Food Spots',
   		location: 'Hamilton, NJ',
   		menuLink: 'http://dominos.com/menu',
-  		votes: 1
+  		votes: 2
   	});
 		
 		fs1.save(function(err){
@@ -30,5 +40,7 @@ module.exports = function (app) {
 				res.status(200).json({success: true});
 			}
 		});
-  });
+  });*/
+
+
 };
