@@ -6,7 +6,11 @@ var express = require('express'),
 	env = require('node-env-file');
 
 // bring in environment variables
-env(__dirname + '/.env');
+try{
+	env(__dirname + '/.env');
+}catch(err){
+	console.log('Error: '+err);
+}
 
 // bring in db config
 require('./app/db/config');
