@@ -12,7 +12,7 @@ module.exports = function (app) {
     res.send('NOMNOMNOM');
   });
 
-  app.get('/nomnom/', function(req,res){
+  app.post('/nomnom/', function(req,res){
   	if(err){
 			res.status(400).json({success: false});
 		}else{
@@ -41,6 +41,4 @@ module.exports = function (app) {
 			}
 		});
   });*/
-
-
 };
