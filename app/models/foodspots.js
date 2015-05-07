@@ -1,9 +1,15 @@
 var mongoose = require('mongoose');
 
 var foodspotSchema = new mongoose.Schema({
+	creator: String,
+	creator_email: String,
 	name: String,
-	location: String,
-	menuLink: String,
+	locationString: String,
+	locationCoords: String,
+	website: String,
+	rating: String,
+	price: String,
+	phone: String,
 	votes: Number
 });
 

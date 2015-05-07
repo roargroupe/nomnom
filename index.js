@@ -21,6 +21,13 @@ require('./app/models/foodspots');
 // body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// setup view engine for HAML
+app.set('views', './app/views');
+app.set('view engine', 'jade');
+
+//static files
+app.use(express.static('./public'));
+
 // error handler
 app.use(function (err, req, res, next) {
   console.error(err.stack)
