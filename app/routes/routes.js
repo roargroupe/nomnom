@@ -15,12 +15,14 @@ module.exports = function (app) {
   });
 
   app.post('/nomnom/', function(req,res){
+  	var returnChannel = req.body.channel_name;
   	Foodspot.find(function(err, data){
 			if (err) {
 				console.log("Uh Oh: " + err);
 			} else {
 				res.status(200);
 				var payload = buildPayload(data);
+				payload.channel = returnChannel;
 				request({
 			    uri: uri,
 			    method: 'POST',
@@ -97,7 +99,7 @@ function buildPayload(data){
 
 	var rando = Math.floor(Math.random() * data.length);
 	var temp = {},price;
-	console.log(rando); 
+	
 	temp.title = data[rando].name;
 	temp.text = '*Rating:* '+data[rando].rating+'\n';
 	if(data[rando].price === '1'){
