@@ -1,15 +1,15 @@
 var express = require('express'),
-  bodyParser = require('body-parser'),
-  app = express(),
-  request = require('request'),
-  port = process.env.PORT || 3000,
-  env = require('node-env-file');
+	bodyParser = require('body-parser'),
+	app = express(),
+	request = require('request'),
+	port = process.env.PORT || 3000,
+	env = require('node-env-file');
 
 // bring in environment variables 
 try{
-  env(__dirname + '/.env');
+	env(__dirname + '/.env');
 }catch(err){
-  console.log('Error: '+err);
+	console.log('Error: '+err);
 }
 
 // bring in db config
@@ -19,8 +19,7 @@ require('./app/db/config');
 require('./app/models/foodspots');
 
 // body parser middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // setup view engine for HAML
 app.set('views', './app/views');
@@ -36,12 +35,12 @@ app.use(function (err, req, res, next) {
 });
 
 // start listening
-app.listen(port, function(){
-  console.log('Up & Running!'); 
-});
+/*app.listen(port, function(){
+	console.log('Up & Running!');	
+});*/
 
 // routes
-require('./app/routes/routes')(app);
+//require('./app/routes/routes')(app);
 
-// bring in process to run bot
-require('./runbot');
+// bring in nomnom bot
+var runbot = require('./runbot');

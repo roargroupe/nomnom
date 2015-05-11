@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 require('../db/config');
 
 module.exports = function (app) {
-	var Foodspot = mongoose.model('Foodspot');
+  var Foodspot = mongoose.model('Foodspot');
 
   // set up the routes themselves
   app.get("/", function (req,res) {
@@ -16,34 +16,52 @@ module.exports = function (app) {
 
   app.post('/nomnom/', function(req,res){
   	var returnChannel = req.body.channel_name;
+  	
   	Foodspot.find(function(err, data){
-			if (err) {
-				console.log("Uh Oh: " + err);
-			} else {
-				res.status(200);
-				var payload = buildPayload(data);
-				payload.channel = returnChannel;
-				request({
-			    uri: uri,
-			    method: 'POST',
-			    body: JSON.stringify(payload)
-			  }, function (error, response, body) {
-			    if (error) {
-			      console.error(error);
-			    }
-			  });
-			}
-		});
+		if (err) {
+			console.log("Uh Oh: " + err);
+		} else {
+			var payload = buildPayload(data);
+			payload.channel = returnChannel;
+			request({
+		    uri: uri,
+		    method: 'POST',
+		    body: JSON.stringify(payload)
+		  }, function (error, response, body) {
+		    if (error) {
+		      console.error(error);
+		    }
+		  });
+		}
+	});
   });
 
   app.get('/nomnom/add', function(req,res){
   	res.render('index');
   });
 
+  app.get('/nomnom/', function(req,res){
+  	Foodspot.find(function(err,data){
+  		if(err){
+  			console.error('Error Retrieving Foodspots:'+err);
+  			res.status(500).send({success: false});
+  		}
+
+  		if(data !== null){
+  			res.status(200).send(data);
+  		}
+  	});
+  });
+
+  app.post('/nomnom/vote', function(req,res){
+  	Foodspot.update({_id: req.body._id}, { $set: { votes: req.body.votes} }, function(error, result){
+  		res.status(200).send({success:true});
+  	});
+  });
+
   app.post('/nomnom/add', function(req,res){
-  	var fs1 = new Foodspot({
+  	var data = {
   		creator: req.body.name,
-  		creator_email: req.body.email,
   		name: req.body.fsname,
   		locationString: req.body.location,
   		locationCoords: req.body.latlng,
@@ -52,16 +70,28 @@ module.exports = function (app) {
   		website: req.body.website,
   		phone: req.body.phone,
   		votes: req.body.votes
-  	});
+  	};
+
+  	Foodspot.find({ 'name': data.name, 'locationString': data.locationString }, 'name creator', function(error, result){
+  		if(error){
+  			console.error('Foodspot Lookup Error: '+error);
+  		}
+  		// if we have a result then it already exists
+  		if(result.length){
+  			res.status(200).json({success: false, data: result});
+  		}else{
+  			var fs1 = new Foodspot(data);
 		
-		fs1.save(function(err){
-			if(err){
-				console.log("Save Error: " + err);
-				res.status(400).json({success: false});
-			}else{
-				res.status(200).json({success: true});
-			}
-		});
+			fs1.save(function(err){
+				if(err){
+					console.log("Save Error: " + err);
+					res.status(400).json({success: false});
+				}else{
+					res.status(200).json({success: true});
+				}
+			});
+  		}
+  	});
   });
 };
 

@@ -1,1 +1,1 @@
-curl -X POST --data "channel_id=C04MW3JAS&channel_name=general&user_id=U04MW3J4J&user_name=Steve&command=/nomnom&text=hello" http://localhost:3000/nomnom/
+curl -X POST --data "channel_id=C04MW3JAS&channel_name=general&user_id=U04MW3J4J&user_name=Steve&command=/nomnom&text=hello" http://localhost:3000/nomnom/add/
