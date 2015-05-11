@@ -40,11 +40,8 @@ app.listen(port, function(){
   console.log('Up & Running!'); 
 });
 
-var Slack, autoMark, autoReconnect, slack, token, Nomnom, nomnom;
-
-Slack = require('./app/bots/node-slack-client');
-
-Nomnom = require('./app/bots/nomnombot');
+// run bot
+require('./app/bots/runbot');
 
 // routes
 require('./app/routes/routes')(app);
