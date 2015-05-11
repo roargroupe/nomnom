@@ -46,7 +46,7 @@ require('./app/routes/routes')(app);
 // bring in process to run bot
 var Slack, autoMark, autoReconnect, slack, token, Nomnom, nomnom;
 
-Slack = require('node-slack-client');
+Slack = require('./node_modules/node-slack-client');
 
 Nomnom = require('./app/bots/nomnombot');
 
