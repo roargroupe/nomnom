@@ -164,12 +164,14 @@ var Nomnom = (function(gm,util,mongoose,request){
         }else if(root.addStep === 3){
           var selection = parseInt(message)-1;
           if(!isNaN(selection)){
+            console.log(root.placesData[selection].place_id);
             root.getPlaceDetails(root.placesData[selection].place_id, function(error,results){
               if(error){
                 console.error('Google Places Details Error: '+error);
               }else{
+                console.log(results.result);
                 var data = {};
-                data.creator = user.name || null;
+                data.creator = '';
                 data.fsname = results.result.name;
                 data.location = results.result.formatted_address;
                 data.latlng = JSON.stringify(results.result.geometry.location);
