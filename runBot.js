@@ -11,9 +11,8 @@ autoReconnect = true;
 autoMark = true;
 
 slack = new Slack(token, autoReconnect, autoMark);
-nomnom = new Nomnom();
 
-//nomnom.findFoodspots;
+nomnom = new Nomnom();
 
 slack.on('open', function() {
   var channel, channels, group, groups, id, messages, unreads;
