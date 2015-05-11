@@ -19,7 +19,7 @@ require('./app/db/config');
 // log
 app.use(logger('dev'));
 
-// bring in models
+// bring in models man
 require('./app/models/foodspots');
 
 // body parser middleware
