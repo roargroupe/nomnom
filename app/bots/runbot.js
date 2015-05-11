@@ -1,8 +1,8 @@
 var Slack, autoMark, autoReconnect, slack, token, Nomnom, nomnom;
 
-Slack = require('./app/bots/node-slack-client');
+Slack = require('node-slack-client');
 
-Nomnom = require('./app/bots/nomnombot');
+Nomnom = require('./nomnombot');
 
 token = process.env.SLACKTOKEN;
 
