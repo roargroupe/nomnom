@@ -44,4 +44,5 @@ app.listen(port, function(){
 require('./app/routes/routes')(app);
 
 // bring in process to run bot
-require('./runbot');
+var runbot = require('./runbot');
+runbot.run();
