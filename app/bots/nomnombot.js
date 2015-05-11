@@ -164,7 +164,6 @@ var Nomnom = (function(gm,util,mongoose,request){
         }else if(root.addStep === 3){
           var selection = parseInt(message)-1;
           if(!isNaN(selection)){
-            console.log(root.placesData[selection].place_id);
             root.getPlaceDetails(root.placesData[selection].place_id, function(error,results){
               if(error){
                 console.error('Google Places Details Error: '+error);
@@ -244,8 +243,9 @@ var Nomnom = (function(gm,util,mongoose,request){
   };
 
   Nomnom.prototype.getPlaceDetails = function(placeId,callback){
+    var key = process.env.GOOGAPIKEY;
     // get place details
-    gm.placeDetails(placeId, process.env.GOOGAPIKEY, callback, null, null);
+    gm.placeDetails(placeId, key, callback, null, null);
   };
 
   Nomnom.prototype.findPlaces = function(fsName,callback){

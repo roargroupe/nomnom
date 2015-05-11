@@ -3,6 +3,7 @@ var express = require('express'),
   app = express(),
   request = require('request'),
   port = process.env.PORT || 3000,
+  logger = require('morgan'),
   env = require('node-env-file');
 
 // bring in environment variables 
@@ -14,6 +15,9 @@ try{
 
 // bring in db config
 require('./app/db/config');
+
+// log
+app.use(logger('dev'));
 
 // bring in models
 require('./app/models/foodspots');
