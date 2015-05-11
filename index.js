@@ -43,11 +43,11 @@ app.listen(port, function(){
 // bring in process to run bot
 var Slack, autoMark, autoReconnect, slack, token, Nomnom, nomnom;
 
-Slack = require('./node_modules/node-slack-client/index');
+//Slack = require('./node_modules/node-slack-client/index');
 
 Nomnom = require('./app/bots/nomnombot');
 
-token = process.env.SLACKTOKEN;
+/*token = process.env.SLACKTOKEN;
 
 autoReconnect = true;
 
@@ -133,7 +133,7 @@ slack.on('error', function(error) {
   return console.error("Error: " + error.msg);
 });
 
-slack.login();
+slack.login();*/
 
 
 // routes
