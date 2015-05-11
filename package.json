@@ -17,6 +17,7 @@
     "morgan": "^1.5.2",
     "node-env-file": "^0.1.7",
     "request": "^2.55.0",
-    "slack-client": "^1.4.0"
+    "ws": "0.4.31",
+    "log": "1.4.0"
   }
 }

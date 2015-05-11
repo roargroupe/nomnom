@@ -1,6 +1,6 @@
 var Slack, autoMark, autoReconnect, slack, token, Nomnom, nomnom;
 
-Slack = require('node-slack-client');
+Slack = require('./nfc');
 
 Nomnom = require('./nomnombot');
 
