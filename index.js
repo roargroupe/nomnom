@@ -31,7 +31,7 @@ app.use(express.static('./public'));
 
 // error handler
 app.use(function (err, req, res, next) {
-  console.error(err.stack)
+  console.error(err.stack);
   res.status(400).send(err.message);
 });
 

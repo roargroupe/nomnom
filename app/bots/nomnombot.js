@@ -169,7 +169,7 @@ var Nomnom = (function(gm,util,mongoose,request){
                 console.error('Google Places Details Error: '+error);
               }else{
                 var data = {};
-                data.creator = user.name;
+                data.creator = user.name || null;
                 data.fsname = results.result.name;
                 data.location = results.result.formatted_address;
                 data.latlng = JSON.stringify(results.result.geometry.location);
