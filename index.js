@@ -43,7 +43,7 @@ app.listen(port, function(){
 // bring in process to run bot
 var Slack, autoMark, autoReconnect, slack, token, Nomnom, nomnom;
 
-//Slack = require('./node_modules/node-slack-client/index');
+Slack = require('./node_modules/node-slack-client/index.js');
 
 Nomnom = require('./app/bots/nomnombot');
 
