@@ -18,9 +18,11 @@ module.exports = function (app) {
   app.post('/nomnom/', function(req,res){
   	var returnChannel = req.body.channel_name;
 
-  	// send back okay status
-  	res.status(200).send();
-
+  	if(req.body.token == process.env.SLASHTOKEN){
+  		// send back okay status
+  		res.status(200).send();
+  	}
+  
   	User.findOne({ slack_userid: req.body.user_id }, function(error,data){
   		if(error){
   			console.error('Error Finding User: '+error);
@@ -68,8 +70,18 @@ module.exports = function (app) {
   	});
   });
 
-  app.get('/nomnom/', function(req,res){
+  app.get('/nomnom/admin', function(req,res){
   	res.render('index');
+  });
+
+  app.get('/nomnom/', function(req,res){
+  	Foodspot.find({}, function(error,data){
+  		if(error){
+  			console.error(error);
+  		}
+
+  		res.status(200).send(data);
+  	});
   });
 
   app.get('/nomnom/getusers', function(req,res){
