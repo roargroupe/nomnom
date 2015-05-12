@@ -282,6 +282,7 @@ function buildPayload(data){
 	temp.text += '*Price:* '+price+'\n';
 	temp.text += '*Phone:* '+data.phone+'\n';
 	temp.text += '*Website:* '+data.website+'\n';
+	temp.text += '*Location:* '+data.locationString+'\n';
 	temp.unfurl_links = true;
 	temp.mrkdwn_in = ['text'];
 	
