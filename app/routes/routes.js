@@ -276,6 +276,8 @@ function buildPayload(data){
 		price = 'Medium';
 	}else if(data.price === '3'){
 		price = 'High';
+	}else{
+		price = 'Not Available';
 	}
 	temp.text += '*Price:* '+price+'\n';
 	temp.text += '*Phone:* '+data.phone+'\n';
