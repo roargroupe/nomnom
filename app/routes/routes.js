@@ -36,7 +36,7 @@ module.exports = function (app) {
 
 			// if user has recent selections then we remove those
 			// from the foodspot data pool for better randomization
-			if(userData.recentSelections.length > 1){
+			if((userData.recentSelections.length > 1) && (userData.recentSelections.length < data.length/2)){
 				for(var i = 0; i < userData.recentSelections.length; i++){
 					for(var j = 0; j < data.length; j++){
 						if(String(data[j]._id) == String(userData.recentSelections[i]._id)){
