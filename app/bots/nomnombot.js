@@ -119,7 +119,7 @@ var Nomnom = (function(gm,util,mongoose,request){
     root = this;
 
     // check for user trying to cancel
-    endWords = ['cancel','end','done','quit','close'];
+    endWords = ['cancel','end','done','quit','close','nope','nah'];
     for(var i = 0; i < endWords.length; i++){
       if(root.addSession || root.voteSession){
         if(message.indexOf(endWords[i]) > -1){
