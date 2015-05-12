@@ -3,7 +3,6 @@ var mongoose = require('mongoose'),
 	uri = 'https://hooks.slack.com/services/'+process.env.INCOMING_WEBHOOK_PATH;
 
 // bring in db
-
 require('../db/config');
 
 module.exports = function (app) {
