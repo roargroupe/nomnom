@@ -1,45 +1,48 @@
 doctype html
 html
  head
-  title Add Foodspot
+  title Foodspot Admin
   link(rel='stylesheet', href='/bower_components/materialize/dist/css/materialize.min.css')
   link(rel='stylesheet', href='/css/main.css')
 
   meta(name='viewport', content='width=device-width, initial-scale=1.0')
  body
   .container.main-container
-   h1 Add Foodspot
-   .row
-    .col.s12
-        .row
-          .input-field.col.s6
-            input#name.validate(placeholder='Name', type='text')
-                       
-            label(for='name') Name
-          .input-field.col.s6
-            input#email.validate(placeholder='Email', type='email')
-                       
-            label(for='email') Email
-        .row
-          .input-field.col.s12
-            input#fsname.validate(placeholder='Foodspot', type='text')
-                       
-            label(for='name') Foodspot
- 
-            input#location(type='hidden', value='')
-            input#latlng(type='hidden', value='')
-            input#rating(type='hidden', value='')
-            input#price(type='hidden', value='')
-            input#website(type='hidden', value='')
-            input#phone(type='hidden', value='')          
-        .row
-         .location-container.cf
-          h4 Location
-          #map-canvas
-          .location-info
-        .row
-         a.btn-floating.btn-large.waves-effect.waves-light.blue#add
-          i.mdi-content-add
+    h1 Nomnom Admin
+    a.waves-effect.waves-light.btn#getusers Get Users
+    .add-container
+     h1 Add Foodspot
+     .row
+      .col.s12
+          .row
+            .input-field.col.s6
+              input#name.validate(placeholder='Name', type='text')
+                         
+              label(for='name') Name
+            .input-field.col.s6
+              input#email.validate(placeholder='Email', type='email')
+                         
+              label(for='email') Email
+          .row
+            .input-field.col.s12
+              input#fsname.validate(placeholder='Foodspot', type='text')
+                         
+              label(for='name') Foodspot
+   
+              input#location(type='hidden', value='')
+              input#latlng(type='hidden', value='')
+              input#rating(type='hidden', value='')
+              input#price(type='hidden', value='')
+              input#website(type='hidden', value='')
+              input#phone(type='hidden', value='')          
+          .row
+           .location-container.cf
+            h4 Location
+            #map-canvas
+            .location-info
+          .row
+           a.btn-floating.btn-large.waves-effect.waves-light.blue#add
+            i.mdi-content-add
                
         
 

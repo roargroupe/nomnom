@@ -21,6 +21,7 @@ app.use(logger('dev'));
 
 // bring in models man
 require('./app/models/foodspots');
+require('./app/models/user');
 
 // body parser middleware
 app.use(bodyParser.json());

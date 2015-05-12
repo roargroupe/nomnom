@@ -168,7 +168,6 @@ var Nomnom = (function(gm,util,mongoose,request){
               if(error){
                 console.error('Google Places Details Error: '+error);
               }else{
-                console.log(results.result);
                 var data = {};
                 data.creator = '';
                 data.fsname = results.result.name;

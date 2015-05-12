@@ -8,49 +8,99 @@ require('../db/config');
 
 module.exports = function (app) {
   var Foodspot = mongoose.model('Foodspot');
+  var User = mongoose.model('User');
 
   // set up the routes themselves
   app.get("/", function (req,res) {
-    res.send('NOMNOMNOM');
+  	res.status(200).send('NOMNOM');
   });
 
   app.post('/nomnom/', function(req,res){
   	var returnChannel = req.body.channel_name;
-  	
-  	Foodspot.find(function(err, data){
-		if (err) {
-			console.log("Uh Oh: " + err);
-		} else {
-			var payload = buildPayload(data);
-			payload.channel = returnChannel;
-			request({
-		    uri: uri,
-		    method: 'POST',
-		    body: JSON.stringify(payload)
-		  }, function (error, response, body) {
-		    if (error) {
-		      console.error(error);
-		    }
-		  });
-		}
-	});
-  });
 
-  app.get('/nomnom/add', function(req,res){
-  	res.render('index');
+  	// send back okay status
+  	res.status(200).send();
+
+  	User.findOne({ slack_userid: req.body.user_id }, function(error,data){
+  		if(error){
+  			console.error('Error Finding User: '+error);
+  		}
+  		var userData = data;
+  		//randomly pick out of available foodspots
+		Foodspot.find(function(error,data){
+			if(error){
+				console.error('Error Find Foodspots: '+error);
+			}
+			
+			if(userData.recentSelections.length > 1){
+				for(var i = 0; i < userData.recentSelections.length; i++){
+					for(var j = 0; j < data.length; j++){
+						if(String(data[j]._id) == String(userData.recentSelections[i]._id)){
+							// remove that from data
+							data.splice(j, 1);
+						}
+					}
+				}
+			}
+
+			var rando = Math.floor(Math.random()*(data.length-1));
+			userData.recentSelections.push(data[rando]);
+			
+			User.update({ slack_userid: req.body.user_id }, { $set: {  updated: Date.now(), recentSelections: userData.recentSelections } }, function(error, result){
+		  		if(error){
+		  			console.error('Error Updating User: '+error);
+		  		}
+		  	});
+
+		  	var payload = buildPayload(data[rando]);
+				payload.channel = '#'+returnChannel;
+
+			request({
+			    uri: uri,
+			    method: 'POST',
+			    body: JSON.stringify(payload)
+			  }, function (error, response, body) {
+			    if (error) {
+			      console.error(error);
+			    }
+	  		});
+		});
+  	});
   });
 
   app.get('/nomnom/', function(req,res){
-  	Foodspot.find(function(err,data){
-  		if(err){
-  			console.error('Error Retrieving Foodspots:'+err);
-  			res.status(500).send({success: false});
-  		}
+  	res.render('index');
+  });
 
-  		if(data !== null){
-  			res.status(200).send(data);
-  		}
-  	});
+  app.get('/nomnom/getusers', function(req,res){
+	request({
+		uri: 'https://slack.com/api/users.list?token='+process.env.SLACKTOKEN,
+		method: 'GET'
+	}, function (error, response, body) {
+		if (error) {
+			console.error(error);
+			res.status(500).send(error);
+		}
+		var pBody = JSON.parse(body);
+		for(var i = 0; i < pBody.members.length; i++){
+			var user = new User({
+				slack_username: pBody.members[i].name,
+				slack_userid: pBody.members[i].id,
+				recentSelections: []
+			});
+			User.remove({}, function(err){
+				if(err){
+					console.error('Error Removing All Users: '+err);
+				}
+			});
+			user.save(function(err){
+				if(err){
+					console.error('Error Adding Users: '+err);
+				}
+			});
+		}
+		res.status(200).send({success:true});
+	});
   });
 
   app.post('/nomnom/vote', function(req,res){
@@ -127,27 +177,28 @@ function buildPayload(data){
 	    ]
 	};
 
-	var rando = Math.floor(Math.random() * data.length);
 	var temp = {},price;
 	
-	temp.title = data[rando].name;
-	temp.text = '*Rating:* '+data[rando].rating+'\n';
-	if(data[rando].price === '1'){
+	temp.title = data.name;
+	temp.text = '*Rating:* '+data.rating+'\n';
+	if(data.price === '1'){
 		price = 'Low';
-	}else if(data[rando].price === '2'){
+	}else if(data.price === '2'){
 		price = 'Medium';
-	}else if(data[rando].price === '3'){
+	}else if(data.price === '3'){
 		price = 'High';
 	}
 	temp.text += '*Price:* '+price+'\n';
-	temp.text += '*Phone:* '+data[rando].phone+'\n';
-	temp.text += '*Website:* '+data[rando].website+'\n';
+	temp.text += '*Phone:* '+data.phone+'\n';
+	temp.text += '*Website:* '+data.website+'\n';
 	temp.unfurl_links = true;
 	temp.mrkdwn_in = ['text'];
 	
-	var rawLatLng = JSON.parse(data[rando].locationCoords),
+	var rawLatLng = JSON.parse(data.locationCoords),
 			center = rawLatLng.lat+','+rawLatLng.lng;
 	temp.image_url = 'https://maps.googleapis.com/maps/api/staticmap?center='+center+'&zoom=16&size=600x300&maptype=roadmap&markers=color:red%7Clabel:S%7C'+center;
+	temp.icon_emoji = ':fries:';
+	temp.username = 'nomnom';
 	payload.attachments.push(temp);
 	return payload;
 }

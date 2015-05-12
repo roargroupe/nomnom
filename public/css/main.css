@@ -43,3 +43,17 @@
 	height: 100%;
 	width: auto;
 }
+
+.add-container{
+	display: block;
+	width: 90%;
+	margin: 0px auto;
+}
+
+a.waves-effect.waves-light.btn{
+	margin: 0px 5%;
+}
+
+.hidden{
+	display: none;
+}

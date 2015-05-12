@@ -1,5 +1,6 @@
 var place,autocomplete,map,marker,
-	addButton = document.querySelector('#add');
+	addButton = document.querySelector('#add'),
+	getUsersButton = document.querySelector('#getusers');
 
 function initialize() {
 	var defaultBounds = new google.maps.LatLngBounds(
@@ -125,6 +126,24 @@ addButton.onclick = function(){
 		}
 	});
 };
+
+getUsersButton.onclick = function(){
+	$.ajax({
+		type: 'GET',
+		url: '/nomnom/getusers/',
+		success: function(data){
+			console.log(data);
+			alert('Your users have been imported!');
+		},
+		error: function(err){
+			console.log(err);
+		}
+	});
+};
+
+
+
+
 
 
 
