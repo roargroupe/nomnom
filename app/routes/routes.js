@@ -33,7 +33,9 @@ module.exports = function (app) {
 			if(error){
 				console.error('Error Find Foodspots: '+error);
 			}
-			
+
+			// if user has recent selections then we remove those
+			// from the foodspot data pool for better randomization
 			if(userData.recentSelections.length > 1){
 				for(var i = 0; i < userData.recentSelections.length; i++){
 					for(var j = 0; j < data.length; j++){
