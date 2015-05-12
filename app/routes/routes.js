@@ -16,64 +16,135 @@ module.exports = function (app) {
   });
 
   app.post('/nomnom/', function(req,res){
-  	var returnChannel = req.body.channel_name;
+  	var returnChannel, text;
+  	returnChannel = req.body.channel_name;
+  	text = req.body.text;
 
   	if(req.body.token == process.env.SLASHTOKEN){
   		// send back okay status
   		res.status(200).send();
+  	}else{
+  		res.status(400).send();
   	}
-  
-  	User.findOne({ slack_userid: req.body.user_id }, function(error,data){
-  		if(error){
-  			console.error('Error Finding User: '+error);
-  		}
-  		var userData = data;
-  		//randomly pick out of available foodspots
-		Foodspot.find(function(error,data){
-			if(error){
-				console.error('Error Find Foodspots: '+error);
-			}
 
-			if(data.length == 0){
-				res.send('Sorry there are no Foodspots at this time! Try adding one using @nomnom: add');
-				return;
-			}
-			// if user has recent selections then we remove those
-			// from the foodspot data pool for better randomization and stuff
-			if((userData.recentSelections.length > 1) && (userData.recentSelections.length < data.length/2)){
-				for(var i = 0; i < userData.recentSelections.length; i++){
-					for(var j = 0; j < data.length; j++){
-						if(String(data[j]._id) == String(userData.recentSelections[i]._id)){
-							// remove that from data
-							data.splice(j, 1);
+  	if(text.indexOf('all') > -1){
+  		Foodspot.find({}, function(error,result){
+  			if(error){
+  				console.error('Error Getting All Foodspots: '+error);
+  			}
+  			var payload = {
+  				attachments:[],
+  				channel: '#'+returnChannel
+  			};
+
+  			if(result){
+  				var temp = {};
+  				temp.text = '*All Foodspots*\n';
+  				for(var i = 0; i < result.length; i++){
+  					temp.text += '*'+(i+1)+'.* '+result[i].name+' at '+result[i].locationString+'\n';
+  				}
+  				temp.unfurl_links = true;
+				temp.mrkdwn_in = ['text'];
+  				payload.attachments.push(temp);
+
+				request({
+				    uri: uri,
+				    method: 'POST',
+				    body: JSON.stringify(payload)
+				  }, function (error, response, body) {
+				    if (error) {
+				      console.error(error);
+				    }
+		  		});
+  			}
+  		});
+  	}else if(text.indexOf('ranked') > -1){
+  		Foodspot.find({}).sort({ votes : 'desc' }).exec(function(error,result){
+  			if(error){
+  				console.error('Error Getting Ranked Foodspots: '+error);
+  			}
+  			var payload = {
+  				attachments:[],
+  				channel: '#'+returnChannel
+  			};
+
+  			if(result){
+  				var temp = {};
+  				temp.text = '*Top Ranked Foodspots*\n';
+  				for(var i = 0; i < result.length; i++){
+  					var vString = (result[i].votes > 1) ? result[i].votes+' votes' : result[i].votes+' vote';
+  					temp.text += '*'+(i+1)+'.* '+result[i].name+' at '+result[i].locationString+' with '+vString+'\n';
+  				}
+  				temp.unfurl_links = true;
+				temp.mrkdwn_in = ['text'];
+  				payload.attachments.push(temp);
+
+				request({
+				    uri: uri,
+				    method: 'POST',
+				    body: JSON.stringify(payload)
+				  }, function (error, response, body) {
+				    if (error) {
+				      console.error(error);
+				    }
+		  		});
+  			}
+  		});
+  	}else{
+  		User.findOne({ slack_userid: req.body.user_id }, function(error,data){
+	  		if(error){
+	  			console.error('Error Finding User: '+error);
+	  		}
+	  		var userData = data;
+	  		//randomly pick out of available foodspots
+			Foodspot.find(function(error,data){
+				if(error){
+					console.error('Error Find Foodspots: '+error);
+				}
+
+				if(data.length == 0){
+					res.send('Sorry there are no Foodspots at this time! Try adding one using @nomnom: add');
+					return;
+				}
+				// if user has recent selections then we remove those
+				// from the foodspot data pool for better randomization and stuff
+				if((userData.recentSelections.length > 1) && (userData.recentSelections.length < data.length/2)){
+					for(var i = 0; i < userData.recentSelections.length; i++){
+						for(var j = 0; j < data.length; j++){
+							if(String(data[j]._id) == String(userData.recentSelections[i]._id)){
+								// remove that from data
+								data.splice(j, 1);
+							}
 						}
 					}
 				}
-			}
 
-			var rando = Math.floor(Math.random()*(data.length-1));
-			userData.recentSelections.push(data[rando]);
-			
-			User.update({ slack_userid: req.body.user_id }, { $set: {  updated: Date.now(), recentSelections: userData.recentSelections } }, function(error, result){
-		  		if(error){
-		  			console.error('Error Updating User: '+error);
-		  		}
-		  	});
+				var rando = Math.floor(Math.random()*(data.length-1));
+				userData.recentSelections.push(data[rando]);
+				
+				User.update({ slack_userid: req.body.user_id }, { $set: {  updated: Date.now(), recentSelections: userData.recentSelections } }, function(error, result){
+			  		if(error){
+			  			console.error('Error Updating User: '+error);
+			  		}
+			  	});
 
-		  	var payload = buildPayload(data[rando]);
-				payload.channel = '#'+returnChannel;
+			  	var payload = buildPayload(data[rando]);
+					payload.channel = '#'+returnChannel;
 
-			request({
-			    uri: uri,
-			    method: 'POST',
-			    body: JSON.stringify(payload)
-			  }, function (error, response, body) {
-			    if (error) {
-			      console.error(error);
-			    }
-	  		});
-		});
-  	});
+				request({
+				    uri: uri,
+				    method: 'POST',
+				    body: JSON.stringify(payload)
+				  }, function (error, response, body) {
+				    if (error) {
+				      console.error(error);
+				    }
+		  		});
+			});
+	  	});
+  	}
+
+  	
   });
 
   app.get('/nomnom/admin', function(req,res){

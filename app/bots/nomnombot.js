@@ -253,7 +253,7 @@ var Nomnom = (function(gm,util,mongoose,request){
       radius = '500',
       key = process.env.GOOGAPIKEY;
     // make call to places api
-    gm.places(latlng, radius, key, callback, null, null, null, fsName, 'distance', null);
+    gm.places(latlng, radius, key, callback, null, 'food|restaurant|cafe|bakery|establishment', null, fsName, 'distance', null);
   };
 
   Nomnom.prototype.setSlackName = function(slackName){
