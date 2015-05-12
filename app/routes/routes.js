@@ -34,6 +34,10 @@ module.exports = function (app) {
 				console.error('Error Find Foodspots: '+error);
 			}
 
+			if(data.length == 0){
+				res.send('Sorry there are no Foodspots at this time! Try adding one using @nomnom: add');
+				return;
+			}
 			// if user has recent selections then we remove those
 			// from the foodspot data pool for better randomization and stuff
 			if((userData.recentSelections.length > 1) && (userData.recentSelections.length < data.length/2)){
