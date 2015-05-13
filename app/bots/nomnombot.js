@@ -115,7 +115,7 @@ var Nomnom = (function(gm,util,mongoose,request){
 
   Nomnom.prototype.process = function(message,channel,user){
     var command, response, root, endWords;
-
+    console.log('IN PROCESS');
     root = this;
 
     // check for user trying to cancel
@@ -132,6 +132,8 @@ var Nomnom = (function(gm,util,mongoose,request){
         }
       }
     }
+
+    console.log(message);
 
     if((!root.addSession) && (!root.voteSession)){
       if(root.talkingToMe(message)){
