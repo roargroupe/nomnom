@@ -139,6 +139,7 @@ var Nomnom = (function(gm,util,mongoose,request){
         if(command === 'add'){
           root.addSession = true;
           response = root.respond(command);
+          console.log('HERE: '+response);
           channel.send(response);
         }else if(command === 'vote'){
           root.voteSession = true;
