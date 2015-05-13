@@ -71,6 +71,7 @@ slack.on('message', function(message){
   userName = (user != null ? user.name : void 0) != null ? "@" + user.name : "UNKNOWN_USER";
   
   if (type === 'message' && (text != null) && (channel != null)) {
+    console.log('RIGHT BEFORE!');
     // send back response from nomnom
     nomnom.process(text,channel,user);
     // return log
