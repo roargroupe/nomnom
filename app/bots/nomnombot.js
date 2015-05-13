@@ -17,7 +17,7 @@ var Nomnom = (function(gm,util,mongoose,request){
 
   Nomnom.prototype.talkingToMe = function(message){
     var rex;
-    rex = new RegExp('<@U04NCQSC8>', 'i');
+    rex = new RegExp('<@U04NCQSC8>|<@U04RQ1LPX>', 'i');
     if(rex.test(message)){
       return true;
     }
@@ -115,7 +115,7 @@ var Nomnom = (function(gm,util,mongoose,request){
 
   Nomnom.prototype.process = function(message,channel,user){
     var command, response, root, endWords;
-    console.log('IN PROCESS');
+    
     root = this;
 
     // check for user trying to cancel
