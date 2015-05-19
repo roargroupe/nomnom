@@ -48,5 +48,9 @@ app.listen(port, function(){
 // run bot
 require('./app/bots/runbot');
 
+// bring in new relic
+require('newrelic');
+
 // routes
 require('./app/routes/routes')(app);
+
