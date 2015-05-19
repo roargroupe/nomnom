@@ -6,6 +6,9 @@ var express = require('express'),
   logger = require('morgan'),
   env = require('node-env-file');
 
+// bring in new relic
+require('newrelic');
+
 // bring in environment variables 
 try{
   env(__dirname + '/.env');
@@ -48,8 +51,7 @@ app.listen(port, function(){
 // run bot
 require('./app/bots/runbot');
 
-// bring in new relic
-require('newrelic');
+
 
 // routes
 require('./app/routes/routes')(app);
