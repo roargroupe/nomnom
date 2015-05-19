@@ -1,3 +1,6 @@
+// bring in new relic
+require('newrelic');
+
 var express = require('express'),
   bodyParser = require('body-parser'),
   app = express(),
@@ -5,9 +8,6 @@ var express = require('express'),
   port = process.env.PORT || 3000,
   logger = require('morgan'),
   env = require('node-env-file');
-
-// bring in new relic
-require('newrelic');
 
 // bring in environment variables 
 try{
